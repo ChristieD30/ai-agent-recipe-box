@@ -1,0 +1,73 @@
+{% extends "base.html" %}
+
+{% block title %}Add Recipe - Recipe App{% endblock %}
+
+{% block content %}
+<div class="row justify-content-center">
+    <div class="col-lg-8">
+        <div class="card">
+            <div class="card-header">
+                <h3 class="mb-0">Add New Recipe</h3>
+            </div>
+            <div class="card-body">
+                <form method="POST" action="{{ url_for('main.add_recipe') }}">
+                    <div class="mb-3">
+                        <label for="name" class="form-label">Recipe Name</label>
+                        <input type="text" class="form-control" id="name" name="name" required>
+                    </div>
+                    
+                    <div class="mb-3">
+                        <label for="ingredients" class="form-label">Ingredients</label>
+                        <textarea class="form-control" id="ingredients" name="ingredients" rows="6" 
+                                  placeholder="Enter ingredients, one per line" required></textarea>
+                        <div class="form-text">List each ingredient on a new line.</div>
+                    </div>
+                    
+                    <div class="mb-3">
+                        <label for="instructions" class="form-label">Instructions</label>
+                        <textarea class="form-control" id="instructions" name="instructions" 
+                                  rows="8" required></textarea>
+                    </div>
+                    
+                    <div class="d-grid gap-2 d-md-flex justify-content-md-end">
+                        <a href="{{ url_for('main.index') }}" class="btn btn-outline-secondary me-md-2">
+                            Cancel
+                        </a>
+                        <button type="submit" class="btn btn-primary">
+                            Save Recipe
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+    // Simple character counter for textareas
+    document.addEventListener('DOMContentLoaded', function() {
+        const textareas = document.querySelectorAll('textarea');
+        textareas.forEach(textarea => {
+            const charCount = document.createElement('small');
+            charCount.className = 'form-text text-muted text-end d-block';
+            textarea.parentNode.insertBefore(charCount, textarea.nextSibling);
+            
+            const updateCount = () => {
+                const remaining = textarea.maxLength - textarea.value.length;
+                charCount.textContent = `${textarea.value.length} characters`;
+                
+                if (remaining < 50) {
+                    charCount.className = 'form-text text-warning d-block';
+                } else {
+                    charCount.className = 'form-text text-muted d-block';
+                }
+            };
+            
+            textarea.addEventListener('input', updateCount);
+            updateCount(); // Initial count
+        });
+    });
+</script>
+{% endblock %}

@@ -1,0 +1,17 @@
+version: '3.8'
+
+services:
+  recipe-app:
+    build: .
+    container_name: recipe-app
+    volumes:
+      - .:/app
+      - recipe-data:/data  # Persistent volume for the database
+    environment:
+      - DB_PATH=/data/recipes.db  # Override the database path
+    tty: true  # Keeps the container running
+    stdin_open: true  # Allows interaction with the container
+    restart: unless-stopped  # Automatically restart the container unless explicitly stopped
+
+volumes:
+  recipe-data:  # Named volume for database persistence
